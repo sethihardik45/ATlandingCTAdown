@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrotalk</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Stars background */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            background-image:
+                radial-gradient(2.5px 2.5px at 10% 20%, rgba(255, 255, 255, 0.8) 0%, transparent 100%),
+                radial-gradient(2px 2px at 30% 60%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+                radial-gradient(3px 3px at 50% 10%, rgba(255, 255, 255, 0.9) 0%, transparent 100%),
+                radial-gradient(2px 2px at 70% 80%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 85% 35%, rgba(255, 255, 255, 0.7) 0%, transparent 100%),
+                radial-gradient(2px 2px at 20% 85%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+                radial-gradient(3px 3px at 60% 50%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 92% 15%, rgba(255, 255, 255, 0.8) 0%, transparent 100%),
+                radial-gradient(2px 2px at 40% 40%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+                radial-gradient(3px 3px at 75% 60%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 5% 5%, rgba(255, 255, 255, 0.8) 0%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 95% 90%, rgba(255, 255, 255, 0.9) 0%, transparent 100%),
+                radial-gradient(2px 2px at 15% 75%, rgba(255, 255, 255, 0.7) 0%, transparent 100%),
+                radial-gradient(3px 3px at 80% 25%, rgba(255, 255, 255, 0.8) 0%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 60% 25%, rgba(255, 255, 255, 0.7) 0%, transparent 100%);
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+
+        body::after {
+            background-image:
+                radial-gradient(2px 2px at 25% 15%, rgba(250, 204, 21, 0.7) 0%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 65% 35%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 55% 85%, rgba(249, 115, 22, 0.5) 0%, transparent 100%),
+                radial-gradient(3px 3px at 35% 95%, rgba(255, 255, 255, 0.8) 0%, transparent 100%),
+                radial-gradient(2px 2px at 85% 70%, rgba(250, 204, 21, 0.6) 0%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 10% 45%, rgba(255, 255, 255, 0.7) 0%, transparent 100%),
+                radial-gradient(2px 2px at 45% 5%, rgba(249, 115, 22, 0.8) 0%, transparent 100%),
+                radial-gradient(3px 3px at 90% 50%, rgba(255, 255, 255, 0.9) 0%, transparent 100%),
+                radial-gradient(2px 2px at 50% 50%, rgba(250, 204, 21, 0.5) 0%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 15% 95%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 10%, rgba(249, 115, 22, 0.7) 0%, transparent 100%),
+                radial-gradient(3px 3px at 30% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 100%),
+                radial-gradient(2px 2px at 40% 70%, rgba(249, 115, 22, 0.6) 0%, transparent 100%);
+            animation: twinkle 5s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .page-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 3rem;
+        }
+
+        /* NAV */
+        nav {
+            display: none;
+        }
+
+        /* HERO */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 5% 1.5rem;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        /* Logo Circle */
+        .logo-circle {
+            width: 228px;
+            height: 228px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f97316 0%, #facc15 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.6rem;
+            box-shadow: 0 0 40px rgba(249, 115, 22, 0.4), 0 0 80px rgba(249, 115, 22, 0.15);
+            position: relative;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 40px rgba(240, 223, 32, 0.5), 0 0 80px rgba(240, 223, 32, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 60px rgba(240, 223, 32, 0.7), 0 0 120px rgba(240, 223, 32, 0.35);
+            }
+        }
+
+        .logo-inner {
+            font-size: 3rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .logo-ring {
+            position: absolute;
+            width: 258px;
+            height: 258px;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(250, 204, 21, 0.3);
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .logo-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #facc15;
+            border-radius: 50%;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        h1 {
+            font-size: clamp(3.6rem, 8.4vw, 5.76rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #f0df20;
+            margin-bottom: 0.75rem;
+            line-height: 1.1;
+        }
+
+        .tagline {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            max-width: 400px;
+        }
+
+        /* CTA Button */
+        .btn-cta {
+            display: inline-block;
+            background: #f0df20;
+            color: #1a1a1a;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            padding: 0.65rem 1.8rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(240, 223, 32, 0.35);
+            margin-bottom: 2rem;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(240, 223, 32, 0.55);
+        }
+
+        .btn-cta:active {
+            transform: scale(0.98);
+        }
+
+        .btn-icon {
+            font-size: 1.1rem;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.9rem;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            margin-bottom: 3rem;
+        }
+
+        /* STATS */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .stat-item {
+            flex: 1;
+            padding: 1.2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #f0df20;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.55);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-star {
+            color: #facc15;
+            font-size: 0.85rem;
+        }
+
+        /* FEATURES */
+        .features {
+            width: 100%;
+            max-width: 900px;
+            padding: 5% 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(250, 204, 21, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .feature-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .feature-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.5;
+        }
+
+        /* ASTROLOGERS */
+        .section {
+            width: 100%;
+            max-width: 900px;
+            padding: 5% 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: #fff;
+        }
+
+        .astro-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .astro-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.25rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .astro-card:hover {
+            background: rgba(249, 115, 22, 0.1);
+            transform: translateY(-2px);
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+
+        .astro-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.3), rgba(250, 204, 21, 0.3));
+            border: 2px solid rgba(250, 204, 21, 0.3);
+        }
+
+        .astro-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .astro-spec {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .astro-meta {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: #facc15;
+        }
+
+        .astro-online {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4ade80;
+            margin-right: 4px;
+        }
+
+        /* FOOTER */
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+        }
+
+        /* HAMBURGER NAV for mobile */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 22px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            h1 {
+                font-size: 3.36rem;
+            }
+
+            .logo-circle {
+                width: 180px;
+                height: 180px;
+            }
+
+            .logo-ring {
+                width: 210px;
+                height: 210px;
+            }
+
+            .logo-inner {
+                font-size: 2.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+        <!-- NAV -->
+        <nav>
+            <a class="nav-logo" href="#">
+                <div class="nav-logo-circle" style="overflow:hidden;padding:0;background:#f5c800;">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+                        <circle cx="100" cy="100" r="100" fill="#f0df20" />
+                        <circle cx="100" cy="100" r="78" fill="none" stroke="#111" stroke-width="4"
+                            stroke-dasharray="6 4" />
+                        <circle cx="100" cy="100" r="52" fill="none" stroke="#111" stroke-width="3.5" />
+                        <circle cx="100" cy="100" r="18" fill="#111" />
+                        <g fill="#f5c800">
+                            <polygon points="100,72 103,88 97,88" />
+                            <polygon points="100,128 103,112 97,112" />
+                            <polygon points="72,100 88,97 88,103" />
+                            <polygon points="128,100 112,97 112,103" />
+                            <polygon points="79.4,79.4 91,89.5 86.5,94" />
+                            <polygon points="120.6,120.6 109,110.5 113.5,106" />
+                            <polygon points="120.6,79.4 110.5,91 106,86.5" />
+                            <polygon points="79.4,120.6 89.5,109 94,113.5" />
+                        </g>
+                        <circle cx="105" cy="100" r="11" fill="#f5c800" />
+                        <circle cx="100" cy="22" r="5" fill="#111" />
+                        <circle cx="22" cy="100" r="8" fill="#111" />
+                        <circle cx="100" cy="178" r="7" fill="#111" />
+                        <ellipse cx="100" cy="178" rx="13" ry="4" fill="none" stroke="#111" stroke-width="2.5" />
+                        <circle cx="165" cy="68" r="5" fill="#111" />
+                        <ellipse cx="165" cy="68" rx="9" ry="3" fill="none" stroke="#111" stroke-width="2" />
+                    </svg>
+                </div>
+                <span>AstroTalk</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#">Chat</a></li>
+                <li><a href="#">Horoscope</a></li>
+                <li><a href="#">Kundli</a></li>
+                <li><a href="#">Puja</a></li>
+                <li><a href="#" class="nav-cta">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero">
+
+            <!-- Logo Circle (SVG recreation of AstroTalk logo) -->
+            <div class="logo-circle"><img src="logo.png" alt="" style="width:100%;height:100%;"></div>
+
+            <h1>Astrotalk</h1>
+            <p class="tagline">India's most trusted astrology platform.<br>24/7 guidance from expert astrologers.
+            </p>
+
+            <a href="#" class="btn-cta">CHAT WITH ASTROLOGER</a>
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-value">15K+</span>
+                    <span class="stat-label">Astrologers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">9Cr+</span>
+                    <span class="stat-label">Happy Users</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">4.7<span class="stat-star">★</span></span>
+                    <span class="stat-label">Rated</span>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+</body>
+
+</html>
