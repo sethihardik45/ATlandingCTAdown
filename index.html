@@ -21,7 +21,8 @@
         }
 
         /* Stars background */
-        body::before, body::after {
+        body::before,
+        body::after {
             content: '';
             position: fixed;
             top: 0;
@@ -71,8 +72,15 @@
         }
 
         @keyframes twinkle {
-            0% { opacity: 0.2; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1.1); }
+            0% {
+                opacity: 0.2;
+                transform: scale(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
         }
 
         .page-wrapper {
@@ -190,6 +198,7 @@
             text-decoration: none;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 20px rgba(240, 223, 32, 0.35);
+            margin-top: 2.5rem;
             margin-bottom: 2rem;
         }
 
@@ -511,7 +520,7 @@
             <p class="tagline">India's most trusted astrology platform.<br>24/7 guidance from expert astrologers.
             </p>
 
-            
+
 
             <!-- Stats -->
             <div class="stats-row">
@@ -530,7 +539,7 @@
             </div>
             <br>
             <a href="#" class="btn-cta">CHAT WITH ASTROLOGER</a>
-            
+
         </section>
 
 
